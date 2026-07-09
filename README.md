@@ -105,6 +105,64 @@ A lower EM Ratio indicates a better trade-off between energy efficiency and exec
 * The attention-based distributional critic enables more robust scheduling decisions under uncertain workloads.
 
 ---
+## Dataset
+
+### GoCJ Dataset
+
+This work uses the **GoCJ (Google Cluster Jobs)** dataset as the workload benchmark for evaluating scheduling performance.
+
+GoCJ is a publicly available benchmark dataset for **cloud scheduling and resource allocation research**. Although it is not a universal benchmark in the same sense as datasets such as ImageNet or MNIST, it is widely used in cloud computing literature for evaluating scheduling algorithms, VM allocation policies, energy-aware schedulers, and reinforcement learning based approaches.
+
+The GoCJ dataset was created using workloads derived from **Google cluster traces** with the objective of providing researchers with a standardized benchmark for comparing cloud scheduling techniques. The original GoCJ publication explicitly states that the dataset was made publicly available to facilitate fair comparison and benchmarking of scheduling and resource management algorithms in cloud environments.
+
+More recently, the **Enhanced GoCJ** dataset introduced multiple workload files of varying sizes generated from Google cluster traces, enabling evaluation under different scales and workload intensities.
+
+### Workload Characteristics
+
+The experiments in this work utilize the **GoCJ-1000** workload containing **1000 cloud tasks (cloudlets)**.
+
+Each task value represents the **computational workload or task length**, typically measured in **Million Instructions (MI)**.
+
+The uploaded workload exhibits significant heterogeneity:
+
+* Number of tasks: **1000**
+* Minimum task size: **15,000 MI**
+* Maximum task size: **900,000 MI**
+* Multiple workload categories ranging from lightweight to compute-intensive jobs
+
+Example task sizes include:
+
+| Category   | Example Task Lengths (MI)          |
+| ---------- | ---------------------------------- |
+| Small      | 15,000, 27,500, 40,000             |
+| Medium     | 65,000, 95,000, 121,000            |
+| Large      | 150,000                            |
+| Very Large | 337,500, 525,000, 712,500, 900,000 |
+
+This heterogeneous workload distribution makes GoCJ particularly suitable for evaluating scheduling policies under realistic cloud conditions where short and long-running tasks coexist.
+
+### Motivation for Using GoCJ
+
+The GoCJ benchmark is well suited for evaluating the proposed scheduling framework because it:
+
+* Simulates realistic cloud workload diversity.
+* Contains tasks with highly varying computational requirements.
+* Enables comparison with traditional scheduling heuristics and modern intelligent schedulers.
+* Is commonly adopted in cloud scheduling literature for benchmarking purposes.
+
+In this work, the GoCJ workload is used to compare scheduling approaches based on:
+
+* Energy Consumption
+* Makespan
+* EM Ratio
+* Resource Utilization
+* Overall Scheduling Efficiency
+
+### References
+
+1. Original GoCJ Dataset: Publicly released for benchmarking cloud scheduling and resource allocation algorithms using workloads derived from Google cluster traces.
+
+2. Enhanced GoCJ Dataset: An extended version containing multiple workload files of different sizes and characteristics for large-scale cloud scheduling evaluation.
 
 ## Summary
 
