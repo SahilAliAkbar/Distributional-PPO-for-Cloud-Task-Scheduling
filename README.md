@@ -1,3 +1,5 @@
+
+
 ## Key Features
 
 * Distributional Reinforcement Learning using Quantile Regression
@@ -91,7 +93,9 @@ A lower EM Ratio indicates a better trade-off between energy efficiency and exec
 | DDQN                          |   1,718,404.21 |    15,767.61 |    107.00 |
 | Standard PPO                  |   1,430,424.69 |    14,144.95 |     98.76 |
 | **Distributional PPO (Ours)** | **870,356.55** | **9,089.42** | **95.11** |
-
+<img width="1500" height="1200" alt="pareto" src="https://github.com/user-attachments/assets/9d6fe9bb-acb8-40b2-a179-8dd1f65a015b" />
+<img width="2850" height="750" alt="comparison" src="https://github.com/user-attachments/assets/61fcf7f2-0239-4a24-961e-3e7ffc3204f1" />
+<img width="2850" height="750" alt="learning_curves" src="https://github.com/user-attachments/assets/81a69888-1450-4963-b75b-b225801ac698" />
 ### Key Observations
 
 * Distributional PPO achieves the **lowest energy consumption** among all evaluated methods.
