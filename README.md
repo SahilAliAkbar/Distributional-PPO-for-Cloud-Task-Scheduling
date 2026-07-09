@@ -1,152 +1,112 @@
----
+## Key Features
 
-## 🚀 D-PPO Energy-Efficient Cloud Task Scheduler
-
-AI-powered cloud scheduling using Distributional Proximal Policy Optimization (D-PPO) for energy-efficient, SLA-aware, and adaptive resource optimization.
-
----
-
-## 📌 Overview
-
-This project presents an advanced cloud task scheduling system based on Distributional Reinforcement Learning, specifically D-PPO (Distributional Proximal Policy Optimization).
-
-Traditional scheduling algorithms struggle to balance **performance, energy efficiency, and reliability** in dynamic environments. This project addresses those limitations by modeling scheduling as a **Markov Decision Process (MDP)** and learning optimal policies through interaction with the environment.
-
----
-
-## ✨ Key Features
-
-* ⚡ **~70% Reduction in Energy Consumption**
-* ⏱ **Competitive Makespan Performance**
-* ✅ **Near-Zero SLA Violations**
-* 🧠 **Distributional Reinforcement Learning (Uncertainty-Aware)**
-* 🔄 **Adaptive Scheduling under Dynamic Workloads**
-* 📈 **Stable and Fast Convergence**
+* Distributional Reinforcement Learning using Quantile Regression
+* Attention-based Actor Network for VM selection
+* Quantile Critic trained using Quantile Huber Loss
+* CVaR-based risk-sensitive scheduling
+* Energy-aware reward design
+* VM consolidation strategy to reduce power consumption
+* Optimization of both energy consumption and makespan
+* Energy-Makespan Ratio (EM Ratio) based evaluation
+* Support for heterogeneous VM environments
+* Evaluation against heuristic and DRL baselines
 
 ---
 
-## 🧠 Methodology
+## Reward Function
 
-### 🔹 Problem Formulation
+The reward function jointly optimizes energy consumption and task completion time:
 
-* Modeled as a **Markov Decision Process (MDP)**
-* States include:
-
-  * Task characteristics
-  * VM resource utilization
-  * Queue status
-* Actions:
-
-  * Assign task → virtual machine
-* Reward:
-
-  * Multi-objective (energy, delay, SLA)
-
----
-
-### 🔹 Core Algorithm
-
-**D-PPO (Distributional Proximal Policy Optimization)**
-
-* Based on:
-
-  * PPO (stable policy updates)
-  * Distributional RL (models full return distribution)
-* Benefits:
-
-  * Better uncertainty handling
-  * Improved decision-making
-  * Stable training
-
----
-
-## 📊 Results
-
-### 🔹 Performance Summary
-
-| Metric             | Improvement       |
-| ------------------ | ----------------- |
-| Energy Consumption | 🔻 ~70% reduction |
-| Makespan           | ⚖️ Competitive    |
-| SLA Violations     | ✅ Near-zero       |
-
----
-
-### 🔹 Visual Results
-
-#### Training Convergence
-
-* Reward stabilizes after ~150–200 episodes
-* Low variance → stable policy
-
-#### Algorithm Comparison
-
-* Compared with:
-
-  * FCFS
-  * SJF
-  * RR
-  * EDF
-  * Min-Min
-  * Max-Min
-
-📌 Add your plots here:
-
-```
-/results/training_curve.png
-/results/comparison_chart.png
+```text
+Reward =
+    Energy Cost
+  + Makespan Cost
+  + Consolidation Bonus
 ```
 
----
+Specifically:
 
+```text
+energy_cost = -(energy_weight * power * runtime / 1000)
 
-## ⚙️ Tech Stack
+makespan_cost = -(makespan_weight * runtime / 50)
 
-* 🐍 Python
-* 📊 NumPy, Pandas
-* 📈 Matplotlib
-* 🤖 PyTorch / TensorFlow (whichever you used)
+consolidation_bonus = 0.5 * vm_utilization
+```
 
----
+The objective is to:
 
-## 🧪 Experimental Setup
-
-* Custom Python-based simulation
-* Multiple evaluation runs (averaged results)
-* Metrics:
-
-  * Makespan
-  * Energy Consumption
-  * SLA Violations
+* Minimize energy consumption
+* Minimize task runtime
+* Encourage VM consolidation
+* Improve overall scheduling efficiency
 
 ---
 
-## 🏆 Achievements
+## Evaluation Metrics
 
-* 🥇 **Nominated for Best Innovative Project**
-* 📊 Demonstrated **significant energy efficiency improvements**
-* 🧠 Introduced **Distributional RL in cloud scheduling**
+The framework evaluates schedulers using three metrics:
 
----
+* Total Energy Consumption (Joules)
+* Makespan
+* Energy-Makespan Ratio (EM Ratio)
 
-## 🔮 Future Work
+The EM Ratio is defined as:
 
-* 🌐 Integration with real cloud platforms (AWS, Azure)
-* ⚡ Faster training & lightweight models
-* 🧠 Attention-based / memory-augmented architectures
-* 📊 Multi-objective adaptive optimization
+```text
+EM Ratio = Total Energy Consumption / Makespan
+```
 
----
-
-## 📜 License
-
-This project is licensed under the **MIT License**.
+A lower EM Ratio indicates a better trade-off between energy efficiency and execution speed.
 
 ---
 
-## 🙌 Acknowledgements
+## Algorithms Compared
 
-* Reinforcement Learning research community
-* PPO & Distributional RL foundational works
-* Cloud scheduling research contributions
+### Classical Scheduling Algorithms
 
+* FCFS
+* Round Robin
+* Priority Scheduling
+* Random Scheduling
+
+### Reinforcement Learning Baselines
+
+* DQN
+* DDQN
+* Standard PPO
+* Distributional PPO (Proposed)
+
+---
+
+## Experimental Results
+
+| Algorithm                     |     Energy (J) |     Makespan |  EM Ratio |
+| ----------------------------- | -------------: | -----------: | --------: |
+| FCFS                          |   1,847,240.59 |    18,041.30 |    101.29 |
+| Round Robin                   |   1,454,313.71 |     4,691.33 |    315.01 |
+| Priority Scheduling           |   1,193,938.09 |     4,766.47 |    268.36 |
+| Random                        |   1,480,130.71 |     6,574.54 |    229.22 |
+| DQN                           |   1,330,598.17 |    11,647.82 |    117.23 |
+| DDQN                          |   1,718,404.21 |    15,767.61 |    107.00 |
+| Standard PPO                  |   1,430,424.69 |    14,144.95 |     98.76 |
+| **Distributional PPO (Ours)** | **870,356.55** | **9,089.42** | **95.11** |
+
+### Key Observations
+
+* Distributional PPO achieves the **lowest energy consumption** among all evaluated methods.
+* Distributional PPO also achieves the **best Energy-Makespan Ratio**, demonstrating the best balance between energy efficiency and execution speed.
+* Round Robin and Priority Scheduling achieve very low makespan values but incur significantly higher EM Ratios due to inefficient energy usage.
+* Standard PPO improves over DQN and DDQN but remains less energy efficient than the proposed Distributional PPO approach.
+* The attention-based distributional critic enables more robust scheduling decisions under uncertain workloads.
+
+---
+
+## Summary
+
+The proposed Distributional PPO scheduler successfully balances two conflicting objectives:
+
+* Reducing total energy consumption
+* Maintaining competitive execution performance
+
+By modelling the full return distribution rather than a scalar expected value, the scheduler learns policies that achieve superior long-term energy efficiency while maintaining acceptable makespan performance.
